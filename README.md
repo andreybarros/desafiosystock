@@ -9,10 +9,9 @@ Este repositório contém as soluções para o desafio técnico solicitado pela 
 
 - `create_tables.sql` — Script para criação das tabelas `venda`, `pedido_compra` e `entradas_mercadoria`.
 - `insert_data.sql` — Scripts para inserção dos dados fornecidos.
-- `consultas_parte1.sql` — Consultas básicas solicitadas na Parte 1.
-- `consultas_parte2.sql` — Consultas com transformações solicitadas na Parte 2.
-- `parte3_validacao.sql` — Estratégia e consultas para validação dos dados com o cliente (Fevereiro/2025).
-- `README.md` — Este arquivo com as instruções e explicações.
+- `Consultas_parte01.sql` — Consultas básicas solicitadas na Parte 1.
+- `Transformação_dados_parte2.sql` — Consultas com transformações solicitadas na Parte 2.
+- `parte03_validacao.sql` — Estratégia e consultas para validação dos dados com o cliente (Fevereiro/2025).
 
 ---
 
