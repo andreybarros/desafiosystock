@@ -51,6 +51,16 @@ Essas consultas podem ser executadas ao vivo durante a reunião para transparên
 4. Rode as consultas das partes 1 e 2 para análise.
 5. Execute o `parte3_validacao.sql` para suporte na validação com o cliente.
 
+
+### Observação Importante sobre a Tabela `entradas_mercadoria`
+
+Durante a criação das tabelas, identifiquei que a definição da tabela `entradas_mercadoria` continha um erro na chave primária: foi informada a coluna `ordem_compra` como parte da chave primária, porém essa coluna não estava declarada na estrutura original.
+
+Para corrigir e garantir a integridade dos dados, adicionei explicitamente a coluna `ordem_compra` à tabela `entradas_mercadoria`, conforme a relação necessária com a tabela `pedido_compra`. Isso permite manter a consistência e o vínculo correto entre os pedidos de compra e as entradas de mercadoria.
+
+Caso deseje verificar o script corrigido, ele está disponível no arquivo `create_tables.sql`.
+
+
 ---
 
 ## Contato
