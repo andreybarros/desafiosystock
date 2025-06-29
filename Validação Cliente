@@ -1,0 +1,62 @@
+Para garantirmos que os dados do sistema estejam corretos e que você tenha total confiança nas informações para tomar suas decisões.
+
+1. O que vamos validar juntos?
+Completude dos dados: Verificar se todas as vendas, pedidos de compra e entradas de mercadoria referentes a fevereiro de 2025 estão registradas.
+
+Consistência das quantidades: Conferir se as quantidades pedidas, recebidas e vendidas fazem sentido e estão de acordo com suas operações.
+
+Exatidão das datas: Garantir que as datas estejam corretas, refletindo o momento real dos processos.
+
+Produtos pendentes: Identificar pedidos que ainda não foram recebidos ou consumidos, para entender eventuais atrasos.
+
+2. Como garantimos que os dados estão certos?
+Realizamos consultas específicas que cruzam as informações entre vendas, pedidos e entradas.
+
+Validamos os totais por produto e por período, para encontrar qualquer discrepância.
+
+Comparamos os dados do sistema com os documentos físicos e relatórios que você já possui.
+
+Usamos filtros por período para focar só nos dados relevantes.
+
+3. Exemplos das consultas que usaremos
+Para que você acompanhe na prática, preparamos algumas consultas que mostram exatamente o que está acontecendo com os produtos em fevereiro:
+
+---
+Total de vendas por produto em fevereiro:
+SELECT produto_id, SUM(qtde_vendida) AS total_consumo
+FROM venda
+WHERE data_emissao BETWEEN '2025-02-01' AND '2025-02-28'
+GROUP BY produto_id;
+
+---
+Pedidos feitos que ainda não foram recebidos:
+SELECT pc.produto_id, pc.qtde_pedida, pc.data_pedido
+FROM pedido_compra pc
+LEFT JOIN entradas_mercadoria em ON pc.ordem_compra = em.ordem_compra
+    AND pc.produto_id = em.produto_id
+    AND pc.item = em.item
+WHERE em.produto_id IS NULL
+AND pc.data_pedido BETWEEN '2025-02-01' AND '2025-02-28';
+
+---
+Produtos que foram pedidos, mas não consumidos nem recebidos:
+WITH consumo_fev AS (
+    SELECT produto_id, SUM(qtde_vendida) AS total_consumo
+    FROM venda
+    WHERE data_emissao BETWEEN '2025-02-01' AND '2025-02-28'
+    GROUP BY produto_id
+),
+recebimento_fev AS (
+    SELECT produto_id, SUM(qtde_recebida) AS total_recebido
+    FROM entradas_mercadoria
+    WHERE data_entrada BETWEEN '2025-02-01' AND '2025-02-28'
+    GROUP BY produto_id
+)
+SELECT pc.produto_id, pc.qtde_pedida
+FROM pedido_compra pc
+LEFT JOIN consumo_fev c ON pc.produto_id = c.produto_id
+LEFT JOIN recebimento_fev r ON pc.produto_id = r.produto_id
+WHERE c.total_consumo IS NULL AND r.total_recebido IS NULL
+AND pc.data_pedido BETWEEN '2025-02-01' AND '2025-02-28';
+
+
